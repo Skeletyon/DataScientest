@@ -48,3 +48,7 @@ dist/**
 *.xlf
 package.nls.*.json
 l10n/
+
+#Code exception
+entreprise.json
+resultat.json
