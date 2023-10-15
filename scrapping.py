@@ -7,7 +7,26 @@ page = urlopen(url)
 
 soup = bs(page, "html.parser")
 
+wonderboxDiv = soup.find('div', attrs={'class' : 'styles_summary__gEFdQ'})
 
+# print(wonderboxDiv.prettify())
+companyName = wonderboxDiv.find('span', attrs={'class' : 'title_displayName__TtDDM'}).text
+nombreAvis = wonderboxDiv.find('span', attrs={'class': 'styles_text__W4hWi'}).text[:-11].strip()
+isVerifiedCompany = 'oui' if wonderboxDiv.find('div', attrs={'class' : 'styles_verificationIcon___X7KO'}).text == 'VERIFIED COMPANY' else 'non'
+ratingCompany = wonderboxDiv.find('p', attrs={'data-rating-typography' : 'true'}).text
+
+
+categoryDiv = soup.find('li', attrs={'class': 'typography_body-m__xgxZ_ typography_appearance-default__AAY17'})
+categoryCompany = categoryDiv.find('a', attrs={'class' : 'link_internal__7XN06'}).text
+
+dataEntreprise = pd.DataFrame([[companyName, categoryCompany, isVerifiedCompany, nombreAvis, ratingCompany]]
+                              , columns=['Nom', 'Categorie', 'Verifiee', 'Nombre avis', 'moyenne'])
+# print(dataEntreprise.head())
+dataEntreprise.to_json('entreprise.json')
+
+
+
+#partie "avis detailles"
 #recuperer le nombre de pages d'avis
 pages = soup.find('div', attrs={'class': 'styles_pagination__6VmQv'})
 pageTotal = pages.find()
