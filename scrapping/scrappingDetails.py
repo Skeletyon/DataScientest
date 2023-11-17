@@ -22,7 +22,7 @@ categoryCompany = categoryDiv.find('a', attrs={'class' : 'link_internal__7XN06'}
 dataEntreprise = pd.DataFrame([[companyName, categoryCompany, isVerifiedCompany, nombreAvis, ratingCompany]]
                               , columns=['Nom', 'Categorie', 'Verifiee', 'Nombre avis', 'moyenne'])
 # print(dataEntreprise.head())
-dataEntreprise.to_json('entreprise.json')
+dataEntreprise.to_json('results/entreprise.json')
 
 
 
@@ -109,4 +109,4 @@ for i in range(1, lastPage):
 
 avis_col = pd.DataFrame(list(zip(personne, commentaire, rating, date, reply)), columns=['Personne', 'Commentaire', 'Rating', 'Date', 'Reponse'])
 # print(avis_col.iloc[3])
-avis_col.to_json('resultat.json')
+avis_col.to_json('results/details.json')
