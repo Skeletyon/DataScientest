@@ -1,0 +1,57 @@
+
+Déterminer la positivité ou la négativité d'un commentaire et le noter
+
+Plusieurs méthodes existent pour déterminer la positivité ou la négativité d'un commentaire et lui attribuer une note
+ :
+
+
+1. Analyse lexicale:
+
+·         Lexique positif et négatif: Identifier les mots exprimant des sentiments positifs (ex : "génial", "super") ou négatifs (ex : "nul", "décevant").
+
+·         Comptage des mots positifs/négatifs: Attribuer une note au commentaire en fonction du nombre de mots positifs et négatifs qu'il contient.
+
+·         Dictionnaires de sentiment: Utiliser des dictionnaires spécifiques associant des mots à des scores de sentiment.
+
+
+2. Analyse syntaxique:
+
+·         Structure du commentaire: Identifier des phrases exclamatives, des points d'interrogation, etc., indiquant une émotion forte.
+
+·         Négation: Prendre en compte les mots de négation ("ne", "pas") pour inverser le sens d'une phrase.
+
+
+3. Apprentissage automatique:
+
+·         Modèles pré-entraînés: Utiliser des modèles d'apprentissage automatique déjà entraînés pour analyser le sentiment des commentaires.
+
+·         Entraînement d'un modèle personnalisé: Créer un modèle spécifique à votre domaine d'application en utilisant des données étiquetées manuellement.
+
+
+4. Intelligence artificielle conversationnelle:
+
+·         Compréhension du contexte: Analyser le contexte du commentaire pour mieux comprendre son sens et sa portée.
+
+·         Intention de l'utilisateur: Déterminer l'intention de l'utilisateur derrière le commentaire (ex : exprimer une satisfaction, une frustration).
+
+
+Attribution d'une note:
+
+·         Système de score simple: Attribuer une note de 1 à 5 (1 étant très négatif et 5 très positif).
+
+·         Score plus précis: Définir une échelle plus fine avec des valeurs intermédiaires (ex : 0.1 à 1).
+
+·         Pondération des scores: Attribuer un poids plus important à certains aspects du commentaire (ex : mots clés, structure).
+
+
+Points importants à prendre en compte:
+
+·         La subjectivité: La perception du sentiment peut varier d'une personne à l'autre.
+
+·         Le sarcasme: L'ironie et le sarcasme peuvent être difficiles à détecter automatiquement.
+
+·         Le contexte: Le contexte d'un commentaire est crucial pour en comprendre le sens et la tonalité.
+
+
+En conclusion, il n'existe pas de méthode unique pour déterminer la positivité ou la négativité d'un commentaire et
+ lui attribuer une note. La meilleure approche dépend du contexte et des besoins spécifiques de l'application.
