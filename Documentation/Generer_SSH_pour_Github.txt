@@ -1,0 +1,27 @@
+1. Ouvrir un terminal ou bien une fenêtre de commande sous Windows
+
+2. Lancer:  ssh-keygen -t ed25519
+
+3. Garder l'emplacement de destination par défaut
+
+4. Mettre la passphrase de votre choix (et la confirmer)
+
+5. Ouvrir la configuration des variables de Windows
+
+6. Ajouter la variable HOME avec la valeur de la variable "USERPROFILE" (nécessaire pour que gitBash / gitCmd fonctionne)
+
+6. Se connecter à https://github.com/Skeletyon/DataScientest
+
+7. Cliquer sur l'icône de votre profil (en haut à droite du menu)
+
+9. Szttings --> SSH and GPG Key --> New SSH key (en haut à droite)
+
+12. Coller le contenu du fichier %USERPROFILE%/.ssh/id_ed25519.pub dans le champ "Key"
+
+13. Cliquer sur "Add SSH key"
+
+14. Dans un terminal Windows, exécuter:
+
+a. ssh -T git@github.com/Skeletyon/DataScientest
+
+15. Taper 'oui' pour accepter la clé ssh du serveur
