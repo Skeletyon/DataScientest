@@ -1,0 +1,36 @@
+# Afficher toute la base
+GET /satisfactionclients_stopword/_search
+{
+  "query": {
+    "match_all": {    }
+  }
+}
+
+# Chercher le mot excellent dans le commentaire
+GET /satisfactionclients_stopword/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Commentaire": "excellent"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Afficher le Rating lors que le mot "excellent" dans le commentaire
+
+
+GET /satisfactionclients_stopword/_search
+{
+  "query": {
+    "match": {
+      "Commentaire": "excellent"
+    }
+  },
+  "_source": ["Rating", "Commentaire"]
+}
