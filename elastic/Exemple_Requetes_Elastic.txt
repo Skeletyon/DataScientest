@@ -1,5 +1,5 @@
 # Afficher toute la base
-GET /satisfactionclients_stopword/_search
+GET /satisfactionclients/_search
 {
   "query": {
     "match_all": {    }
@@ -7,7 +7,7 @@ GET /satisfactionclients_stopword/_search
 }
 
 # Chercher le mot excellent dans le commentaire
-GET /satisfactionclients_stopword/_search
+GET /satisfactionclients/_search
 {
   "query": {
     "bool": {
@@ -33,4 +33,59 @@ GET /satisfactionclients_stopword/_search
     }
   },
   "_source": ["Rating", "Commentaire"]
+}
+GET /satisfactionclients/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Commentaire": "excellent"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET /satisfactionclients/_search
+{
+  "query": {
+    "match_all": {    }
+  }
+}
+
+
+
+GET /satisfactionclients/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Sentiment": "positif"
+          }
+        },
+        {
+          "range": {
+            "Rating": {
+              "gt": 3
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": ["Rating", "Commentaire", "MotsPositifs", "MotsNegatifs", "Sentiment"]
+}
+
+GET /satisfactionclients/_search
+{
+  "query": {
+            "match_all": {}
+        },
+
+  "_source": ["Rating", "Commentaire","MotsPositifs","MotsNegatifs","Sentiment"]
 }
