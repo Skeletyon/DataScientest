@@ -61,12 +61,14 @@ try:
         )
 
 
-    index_name = "satisfactionclients_stopword"
+#    index_name = "satisfactionclients_stopword"
+    index_name = "satisfactionclients"
     index_settings = {
         "number_of_shards": 1,
         "number_of_replicas": 1,
     }
-    
+
+    index_sentiment = "sentiments"
         
     # Définition du mapping (schéma) de l'index
     # mapping = {
@@ -82,14 +84,40 @@ try:
     # }
 
 # Définition du mapping (schéma) de l'index avec un analyzer français
+#     mapping = {
+#         "mappings": {
+#             "properties": {
+#                 "Personne": {"type": "text"},
+#                 "Commentaire": {"type": "text" , "analyzer": "french","fielddata": True},
+#                 "Rating" : {"type": "float"},
+#                 "Date": {"type": "date"},
+#                 "Reponse": {"type": "text", "analyzer": "french","fielddata": True},
+#             }
+#         }
+#     }
+
+# Mapping final avec langue, Mots positifs, Mot Négatifs, Sentiments
     mapping = {
         "mappings": {
             "properties": {
                 "Personne": {"type": "text"},
-                "Commentaire": {"type": "text" , "analyzer": "french","fielddata": True},
+                "Commentaire": {"type": "text" , "fielddata": True},
                 "Rating" : {"type": "float"},
                 "Date": {"type": "date"},
-                "Reponse": {"type": "text", "analyzer": "french","fielddata": True},
+                "Reponse": {"type": "text", "fielddata": True},
+                "Langue": {"type": "text", "fielddata": True},
+                "MotsPositifs": {"type": "text", "fielddata": True},
+                "MotsNegatifsifs": {"type": "text", "fielddata": True},
+                "Sentiment": {"type": "text", "fielddata": True},
+            }
+        }
+    }
+
+    mapping_sentiment = {
+        "mappings": {
+            "properties": {
+                "Text": {"type": "text","fielddata": True},
+                "Label": {"type": "text" ,"fielddata": True},
             }
         }
     }
@@ -105,7 +133,7 @@ try:
         index_info = es.indices.get(index=index_name)
 
         # Affichage des caractéristiques de l'index
-        print("Caractéristiques de l'index '{}':".format(index_name))
+        print("Caractéristiques de l'index '{}':".format(index_sentiment))
         print("-----------------------------------------")
         print(index_info[index_name])
 
