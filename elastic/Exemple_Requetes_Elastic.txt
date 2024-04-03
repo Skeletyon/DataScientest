@@ -58,7 +58,8 @@ GET /satisfactionclients/_search
 
 
 
-GET /satisfactionclients/_search
+
+GET /satisfactionclients_stopword/_search
 {
   "query": {
     "bool": {
@@ -74,11 +75,18 @@ GET /satisfactionclients/_search
               "gt": 3
             }
           }
+        },
+        {
+          "range": {
+            "Date": {
+              "lt": "2024-01-01"
+            }
+          }
         }
       ]
     }
   },
-  "_source": ["Rating", "Commentaire", "MotsPositifs", "MotsNegatifs", "Sentiment"]
+  "_source": ["Date","Rating", "Commentaire", "MotsPositifs", "MotsNegatifs", "Sentiment"]
 }
 
 GET /satisfactionclients/_search
