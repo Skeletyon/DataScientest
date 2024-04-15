@@ -1,19 +1,4 @@
 from elasticsearch import Elasticsearch
-#import  ssl
-# trust="/home/nguyenhn/logiciel/elk/elasticsearch-8.13.0/config/certs/transport.p12"
-# keystore="/home/nguyenhn/logiciel/elk/elasticsearch-8.13.0/config/certs"
-# ctx = ssl.create_default_context()
-# ctx.verify_mode = ssl.CERT_REQUIRED
-# ctx.check_hostname = True
-#
-# es_host = "localhost"
-# es_port = 9200
-# es_username = "elastic"
-# es_password = "changeme"
-
-# # Load truststore content (assuming PEM format)
-# with open(keystore, "rb") as f:
-#   ctx.load_cert_chain(f)  # Load server certificate and any CA certificates
 
 
 #
@@ -48,20 +33,13 @@ def create_index(es, index_name, index_settings):
 
 try:
 
-    # Create connection with SSL context
-    # es = Elasticsearch(
-    #     hosts=[{"host": es_host, "port": es_port}],
-    #     http_auth=(es_username, es_password),
-    #     use_ssl=True,
-    #     ssl_context=ctx
-    # )
     es = Elasticsearch(
             url,
             basic_auth=(username, password),
         )
 
 
-#    index_name = "satisfactionclients_stopword"
+
     index_name = "satisfactionclients"
     index_settings = {
         "number_of_shards": 1,
@@ -70,36 +48,13 @@ try:
 
     index_sentiment = "sentiments"
         
-    # Définition du mapping (schéma) de l'index
-    # mapping = {
-    #     "mappings": {
-    #         "properties": {
-    #             "Personne": {"type": "text"},
-    #             "Commentaire": {"type": "text"},
-    #             "Rating" : {"type": "float"},
-    #             "Date": {"type": "date"},
-    #             "Reponse": {"type": "text"},
-    #         }
-    #     }
-    # }
-
-# Définition du mapping (schéma) de l'index avec un analyzer français
-#     mapping = {
-#         "mappings": {
-#             "properties": {
-#                 "Personne": {"type": "text"},
-#                 "Commentaire": {"type": "text" , "analyzer": "french","fielddata": True},
-#                 "Rating" : {"type": "float"},
-#                 "Date": {"type": "date"},
-#                 "Reponse": {"type": "text", "analyzer": "french","fielddata": True},
-#             }
-#         }
-#     }
-
 # Mapping final avec langue, Mots positifs, Mot Négatifs, Sentiments
     mapping = {
         "mappings": {
             "properties": {
+                "Domaine": {"type": "text"},
+                "Société": {"type": "text"},
+                "Pays": {"type": "text"},
                 "Personne": {"type": "text"},
                 "Commentaire": {"type": "text" , "fielddata": True},
                 "Rating" : {"type": "float"},
