@@ -88,7 +88,7 @@ try:
         index_info = es.indices.get(index=index_name)
 
         # Affichage des caractéristiques de l'index
-        print("Caractéristiques de l'index '{}':".format(index_sentiment))
+        print("Caractéristiques de l'index '{}':".format(index_name))
         print("-----------------------------------------")
         print(index_info[index_name])
 

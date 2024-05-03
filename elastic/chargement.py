@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch
 import json
 import datetime
 import re
-from LibSatisfaction import mots_pos_neg, detect_language,detect_format_date
+from LibSatisfaction import mots_pos_neg, detect_language,detect_format_date,detect_sentiment_fr,detect_sentiment_other
 
 # Définir l'URL de la base Elasticsearch
 url = "http://localhost:9200"
@@ -21,6 +21,9 @@ jsonFiles=[ ("WonderboxBelgique.json","Belgique"),
             ("WonderboxHollande.json", "Hollande"),
 ]
 
+# jsonFiles=[
+#              ("WonderboxFrance.json","France")
+#  ]
 #
 # # Mapping final avec langue, Mots positifs, Mot Négatifs, Sentiments
 #     mapping = {
@@ -67,8 +70,6 @@ try:
         # Envoyer les documents par lot pour optimiser les performances
         for doc in data:
             # detection de la langue du commentaire
-
-
             doc["Domaine"] = "Boutique de cadeaux"
             doc["Société"] = "WonderBox"
             doc["Pays"] = Pays
@@ -98,14 +99,19 @@ try:
             doc["MotsNegatifs"] = mots_negatifs
 
             # Estimer le sentiment
-            if (len(mots_positifs) == len(mots_negatifs) ):
-                doc["Sentiment"]   = "neutre"
-            elif (len(mots_positifs) > len(mots_negatifs) ):
-                doc["Sentiment"] = "positif"
-            elif (len(mots_negatifs) > len(mots_positifs) ):
-                doc["Sentiment"] = "negatif"
+            if (lang == "fr"):
+                doc["Sentiment"] =detect_sentiment_fr(comment)
             else:
-                doc["Sentiment"] = "neutre"
+                doc["Sentiment"] =detect_sentiment_other(comment)
+
+                # if (len(mots_positifs) == len(mots_negatifs) ):
+            #     doc["Sentiment"]   = "neutre"
+            # elif (len(mots_positifs) > len(mots_negatifs) ):
+            #     doc["Sentiment"] = "positif"
+            # elif (len(mots_negatifs) > len(mots_positifs) ):
+            #     doc["Sentiment"] = "negatif"
+            # else:
+            #     doc["Sentiment"] = "neutre"
 
             if (lang == "fr"):
             # Indexation

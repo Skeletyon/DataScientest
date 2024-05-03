@@ -118,6 +118,17 @@ GET /satisfactionclients/_search
   }
 }
 
+
+GET /satisfactionclients/_search
+{
+  "query": {
+             "match": {
+                "Sentiment": "-1"
+            }
+        },
+
+  "_source": ["Rating", "Commentaire","MotsPositifs","MotsNegatifs","Sentiment","Langue","Pays"]
+}
 POST /satisfactionclients/_count
 {
   "query": {
@@ -146,18 +157,7 @@ POST /satisfactionclients/_count
   }
 }
 
-POST /satisfactionclients/_count
-{
-  "query": {
-    "bool": {
-      "must": [
-        { "match": { "Sentiment": "positif" } },
-        { "match": { "Pays": "Hollande" } }
-      ]
-    }
-  }
-}
-
+    $$=$=+
 
 GET /satisfactionclients/_search
 {
@@ -169,4 +169,43 @@ GET /satisfactionclients/_search
       ]
     }
   }
+}
+
+GET _search/satisfactionclients_fr/
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET /satisfactionclients_fr/_search
+{
+  "query": {
+            "match_all": {}
+        },
+
+  "_source": ["Rating", "Commentaire","MotsPositifs","MotsNegatifs","Sentiment","Langue","Pays"]
+}
+
+GET /satisfactionclients/_search
+{
+  "query": {
+             "match": {
+                "Sentiment": "1"
+            }
+        },
+
+  "_source": ["Rating", "Commentaire","MotsPositifs","MotsNegatifs","Sentiment","Langue","Pays"]
+}
+
+
+POST /satisfactionclients_fr,satisfactionclients_en,satisfactionclients_other/_search
+{
+  "query": {
+             "match": {
+                "Sentiment": "negatif"
+            }
+        },
+
+  "_source": ["Rating", "Commentaire","MotsPositifs","MotsNegatifs","Sentiment","Langue","Pays"]
 }

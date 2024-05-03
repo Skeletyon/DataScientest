@@ -107,8 +107,52 @@ def detect_format_date(date_str):
 
     return date_str,"None" # Retourne None si aucun format n'a fonctionné
 
+def detect_sentiment_fr(phrase):
+    from   textblob_fr  import PatternAnalyzer
+    from textblob import TextBlob
+
+
+    # Création d'un objet TextBlob avec l'analyseur PatternAnalyzer pour le français
+    blob = TextBlob(phrase, analyzer=PatternAnalyzer())
+
+    # Détection du sentiment
+    sentiment = blob.sentiment
+
+    # Vérification si le sentiment est négatif
+    if sentiment[0] < 0:
+#        print("negatif")
+        return ("negatif")
+    elif sentiment[0] == 0:
+#       print("neutre")
+        return("neutre")
+    else:
+#        print("positif")
+        return("positif")
+
+
+def detect_sentiment_other(phrase):
+    from textblob import TextBlob
+
+    # Création d'un objet TextBlob
+    blob = TextBlob(phrase)
+
+    # Détection du sentiment
+    sentiment = blob.sentiment
+
+    # Vérification si le sentiment est négatif
+    if sentiment.polarity < 0:
+        #print("negatif")
+        return ("negatif")
+    elif sentiment.polarity == 0:
+        #print("neutre")
+        return ("neutre")
+    else:
+        #print("positif")
+        return("positif")
 
 ######################### Usage : Test LIB ###################################
+# phrase="Le restaurant est bon.   Le menu, laccueil,  le service."
+# detect_sentiment_fr(phrase)
 
 # # #Texte contenant des mots positifs (exemple)
 # texte = "J'aime vraiment ce film, c'est fantastique et incroyable."
