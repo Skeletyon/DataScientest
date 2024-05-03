@@ -1,3 +1,4 @@
+### Chargement les 3 fichiers json dans les 3 index qui correspondent à la langue détectée
 from elasticsearch import Elasticsearch
 import json
 import datetime
@@ -10,7 +11,10 @@ url = "http://localhost:9200"
 # Définir le nom d'utilisateur et le mot de passe
 username = "elastic"
 password = "changeme"
-index_name = "satisfactionclients"
+#index_name = "satisfactionclients"
+index_name_fr = "satisfactionclients_fr"
+index_name_en = "satisfactionclients_en"
+index_name_other = "satisfactionclients_other"
 
 jsonFiles=[ ("WonderboxBelgique.json","Belgique"),
             ("WonderboxFrance.json","France"),
@@ -55,11 +59,16 @@ try:
     print(f"Information Elasticsearch:\n{info}")
     for jsonFile, Pays in jsonFiles:
         print("File:",jsonFile)
+        print("Pays:", Pays)
+
         with open(jsonFile , "r") as f:
             data = json.load(f)
 
         # Envoyer les documents par lot pour optimiser les performances
         for doc in data:
+            # detection de la langue du commentaire
+
+
             doc["Domaine"] = "Boutique de cadeaux"
             doc["Société"] = "WonderBox"
             doc["Pays"] = Pays
@@ -89,24 +98,33 @@ try:
             doc["MotsNegatifs"] = mots_negatifs
 
             # Estimer le sentiment
-            if (len(mots_positifs) >0  and len(mots_negatifs) >0 ):
+            if (len(mots_positifs) == len(mots_negatifs) ):
                 doc["Sentiment"]   = "neutre"
-            elif (len(mots_positifs) > 0 and  float(doc["Rating"]) > 2.5):
+            elif (len(mots_positifs) > len(mots_negatifs) ):
                 doc["Sentiment"] = "positif"
-            elif (len(mots_negatifs) > 0 ):
+            elif (len(mots_negatifs) > len(mots_positifs) ):
                 doc["Sentiment"] = "negatif"
             else:
                 doc["Sentiment"] = "neutre"
 
+            if (lang == "fr"):
             # Indexation
-            es.index(index=index_name, body=doc)
-
+                es.index(index=index_name_fr, body=doc)
+            elif (lang == "en"):
+            # Indexation
+                es.index(index=index_name_en, body=doc)
+            else:
+                es.index(index=index_name_other, body=doc)
 
         # Contrôler le nombre de documents charger
          # Verify document count using the correct method
-        count = es.search(index=index_name, body={"size": 0})["hits"]["total"]["value"]
-        print(f"\nNombre de documents chargés : {count}")
-        print(f"\nNombre de documents : {count}")
+        count = es.search(index=index_name_en, body={"size": 0})["hits"]["total"]["value"]
+        print(f"\nNombre de documents chargés en : {count}")
+        count = es.search(index=index_name_fr, body={"size": 0})["hits"]["total"]["value"]
+        print(f"\nNombre de documents chargés fr: {count}")
+        count = es.search(index=index_name_other, body={"size": 0})["hits"]["total"]["value"]
+        print(f"\nNombre de documents chargés other: {count}")
+
 
 except Exception as e:
     print(f"Erreur : {e}")
