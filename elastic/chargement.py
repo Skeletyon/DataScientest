@@ -4,6 +4,15 @@ import json
 import datetime
 import re
 from LibSatisfaction import mots_pos_neg, detect_language,detect_format_date,detect_sentiment_fr,detect_sentiment_other
+import datetime as dt
+
+#On pourait en faire une petite fonction pour etre propres
+cheminFichierScrapping = "../scrapping/results/"
+current_date = dt.date.today()
+f = current_date.strftime('%Y-%m-%d')
+belgique = cheminFichierScrapping + f + "_WonderboxBelgique.json"
+france = cheminFichierScrapping + f + "_WonderboxFrance.json"
+hollande = cheminFichierScrapping + f + "_WonderboxHollande.json"
 
 # Définir l'URL de la base Elasticsearch
 url = "http://localhost:9200"
@@ -16,9 +25,9 @@ index_name_fr = "satisfactionclients_fr"
 index_name_en = "satisfactionclients_en"
 index_name_other = "satisfactionclients_other"
 
-jsonFiles=[ ("WonderboxBelgique.json","Belgique"),
-            ("WonderboxFrance.json","France"),
-            ("WonderboxHollande.json", "Hollande"),
+jsonFiles=[ (belgique,"Belgique"),
+            (france,"France"),
+            (hollande, "Hollande"),
 ]
 
 # jsonFiles=[
@@ -131,6 +140,7 @@ try:
         count = es.search(index=index_name_other, body={"size": 0})["hits"]["total"]["value"]
         print(f"\nNombre de documents chargés other: {count}")
 
+    print("Chargement complet des données terminé")
 
 except Exception as e:
     print(f"Erreur : {e}")

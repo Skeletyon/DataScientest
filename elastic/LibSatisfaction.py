@@ -108,7 +108,7 @@ def detect_format_date(date_str):
     return date_str,"None" # Retourne None si aucun format n'a fonctionné
 
 def detect_sentiment_fr(phrase):
-    from   textblob_fr  import PatternAnalyzer
+    from textblob_fr import PatternAnalyzer
     from textblob import TextBlob
 
 

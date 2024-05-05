@@ -19,7 +19,7 @@ Pré-requis: Elasticsearch et Kibana installés.
 		{
 		  "password": "<nouveau_mot_de_passe>"
 		}
-3. Définir un mapping (schéma) de l'index (avec un analyzer français , par exemple)
+3. Définir un mapping (schéma) de l'index (avec un analyzer français , par exemple) => lancer creationIndexStopWord.py etc
 4. Tester l'existence de l'index après la création (testindex.py)
 
 5. Lancvement du chargement de données. (chargement.py)
