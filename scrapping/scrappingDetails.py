@@ -142,7 +142,7 @@ for url, pays in tab_url_pays:
 
     current_date = dt.date.today()
     f = current_date.strftime('%Y-%m-%d')
-    nomFichier = "./results/" + f + "_Wonderbox" + pays + ".json"
+    nomFichier = "/opt/projet/scrapping/results/" + f + "_Wonderbox" + pays + ".json"
 
     with open(nomFichier, "w",encoding='utf-8') as f:
         f.write(json_df)

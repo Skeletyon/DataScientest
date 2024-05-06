@@ -43,11 +43,13 @@ services:
       AIRFLOW__SMTP__SMTP_PASSWORD: "cfsrvkongsobheta"
       AIRFLOW__SMTP__SMTP_MAIL_FROM: "de.airflow@gmail.com"
 
-      _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- pymongo}
+      _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- pymongo spacy langdetect download en_core_web_sm fr_core_news_sm}
     volumes:
       - ../Automatisation/Airflow/dags:/opt/airflow/dags
       - ../Automatisation/Airflow/logs:/opt/airflow/logs
       - ../Automatisation/Airflow/plugins:/opt/airflow/plugins
+      - ../scrapping:/opt/projet/scrapping
+      - ../elastic:/opt/projet/elastic
     user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
     depends_on:
       redis:

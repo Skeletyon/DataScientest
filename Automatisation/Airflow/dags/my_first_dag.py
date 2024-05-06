@@ -1,9 +1,12 @@
 from airflow import DAG
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
+from airflow.operators.bash_operator import BashOperator
 import datetime
+import subprocess
 import time
 
+folder_scrapping = '../../projet/scrapping/'
 my_dag = DAG(
     dag_id='automatisationComplete',
     description='Lance tous les process du projet',
@@ -16,25 +19,18 @@ my_dag = DAG(
 )
 
 # definition of the function to execute
-def lunchScrapping():
-    # raise TypeError('This will not work')
-    print(datetime.datetime.now())
-    print('Hello from Airflow')
 
-def lunchIngestion():
-    print('Hello from Airflow again')
+# my_lunchScrapping = BashOperator(
+#     task_id='lunchScrapping',
+#     bash_command='python /opt/projet/scrapping/scrappingDetails.py',
+#     dag=my_dag
+# )
 
-
-my_lunchScrapping = PythonOperator(
-    task_id='lunchScrapping',
-    python_callable=lunchScrapping,
-    dag=my_dag
-)
-
-my_lunchIngestion = PythonOperator(
+my_lunchIngestion = BashOperator(
     task_id='lunchIngestion',
-    python_callable=lunchIngestion,
+    bash_command='python /opt/projet/elastic/chargement.py',
     dag=my_dag
 )
 
-my_lunchScrapping >> my_lunchIngestion
+# my_lunchScrapping >> my_lunchIngestion
+my_lunchIngestion
