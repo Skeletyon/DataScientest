@@ -2,7 +2,8 @@ import spacy
 import datetime
 from langdetect import detect_langs
 from langdetect.lang_detect_exception import LangDetectException
-
+from  Cstsentiments import sentiments_positifs_fr,sentiments_negatifs_fr
+import re
 #### IMPORTANT #######
 # A charger : python -m spacy download en_core_web_sm
 # A charger : python -m spacy download fr_core_news_sm
@@ -37,28 +38,26 @@ nlpFr = spacy.load("fr_core_news_sm")
 nlpEn = spacy.load("en_core_web_sm")
 # Retourner les mots negatifs ou positifs d'une phrase
 def mots_pos_neg (comment,lang):
-    # Analyser le texte avec spaCy
-    if (lang == "fr"):
-        doc = nlpFr(comment)
-    elif (lang == "en"):
-        doc = nlpEn(comment)
-    else:
-        doc = nlpFr(comment)
-
     # Liste pour stocker les mots positifs
     mots_positifs = ""
     mots_negatifs = ""
 
-    # Parcourir chaque token dans le document spaCy
-    for token in doc:
-        # Vérifier si le token est un adjectif et s'il est positif
-        if token.pos_ == "ADJ":
-            if token.dep_ == "advmod":
-                # Ajouter le mot négatif à la liste des mots négatifs
-                mots_negatifs = token.text + "," + mots_negatifs
-            else:
-                # Ajouter le mot positif à la liste des mots positifs
-                mots_positifs = token.text + "," + mots_positifs
+    # Analyser le texte avec spaCy
+    if (lang == "en"):
+        doc = nlpEn(comment)
+        # Parcourir chaque token dans le document spaCy
+        for token in doc:
+            # Vérifier si le token est un adjectif et s'il est positif
+            if token.pos_ == "ADJ":
+                if token.dep_ == "advmod":
+                    # Ajouter le mot négatif à la liste des mots négatifs
+                    mots_negatifs = token.text + "," + mots_negatifs
+                else:
+                    # Ajouter le mot positif à la liste des mots positifs
+                    mots_positifs = token.text + "," + mots_positifs
+
+    elif(lang == "fr"):
+        mots_negatifs,mots_positifs=neg_pos_fr_lexique(comment)
 
     #print("Mots positifs :", mots_positifs)
     #print("Mots negatifs :", mots_negatifs)
@@ -67,6 +66,31 @@ def mots_pos_neg (comment,lang):
 
     return (mots_positifs,mots_negatifs)
 
+
+def neg_pos_fr_lexique(texte):
+    # Initialiser une liste pour stocker les mots positifs détectés
+    mots_positifs_detectes = ""
+    mots_negatifs_detectes = ""
+
+    # Parcourir chaque mot positif dans la liste
+
+    # Parcourir chaque mot positif dans la liste
+    for mot_positif in sentiments_positifs_fr:
+        # Vérifier si le mot positif se trouve dans le texte
+        if re.search(r'\b{}\b'.format(mot_positif), texte, flags=re.IGNORECASE):
+            # Ajouter le mot positif à la liste des mots positifs détectés
+            # Ajouter le mot positif à la liste des mots positifs détectés
+            mots_positifs_detectes= mots_positifs_detectes + "," + mot_positif
+
+    # Parcourir chaque mot negatif dans la liste
+    for mot_negatif in sentiments_negatifs_fr:
+        # Vérifier si le mot positif se trouve dans le texte
+        if re.search(r'\b{}\b'.format(mot_negatif), texte, flags=re.IGNORECASE):
+            # Ajouter le mot positif à la liste des mots positifs détectés
+            #mots_negatifs_detectes.append(mot_negatif)
+            mots_negatifs_detectes = mots_negatifs_detectes + "," + mot_negatif
+
+    return mots_negatifs_detectes,mots_positifs_detectes
 
 def detect_format_date(date_str):
     formats_possibles = [
