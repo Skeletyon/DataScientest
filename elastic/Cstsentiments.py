@@ -1,4 +1,3 @@
-
 sentiments_positifs_fr = [
   # Émotions positives
   "joie",
@@ -10,6 +9,7 @@ sentiments_positifs_fr = [
   "espoir",
   "sérénité",
   "paix",
+  "simple",
 
   # Sentiments de bien-être
   "bien-être",
@@ -24,6 +24,7 @@ sentiments_positifs_fr = [
   "fierté",
   "accomplissement",
   "reconnaissance",
+  "conforme"
 
   # Sentiments d'affection
   "amour",
@@ -48,6 +49,10 @@ sentiments_positifs_fr = [
   "optimisme",
   "créativité",
   "générosité",
+  "important",
+  "bonus",
+  "disponible",
+  "important"
 ]
 
 sentiments_negatifs_fr = [
@@ -62,6 +67,11 @@ sentiments_negatifs_fr = [
   "jalousie",
   "anxiété",
   "stress",
+  "rupture",
+  "merci",
+  "simple",
+  "rapide",
+  "disponible"
 
   # Sentiments de mal-être
   "mal-être",
@@ -72,6 +82,7 @@ sentiments_negatifs_fr = [
   "solitude",
   "rejet",
   "abandon",
+  "indisponible"
 
   # Sentiments d'échec
   "échec",
@@ -93,6 +104,7 @@ sentiments_negatifs_fr = [
 
   # Autres sentiments négatifs
   "ennui",
+  "impossible",
   "apathie",
   "désespoir",
   "pessimisme",
