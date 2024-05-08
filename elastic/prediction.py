@@ -32,6 +32,18 @@ es = Elasticsearch(
     basic_auth=(username, password),
 )
 
+
+# Définissez  requête  moyenne rating
+requete = {
+  "size": 0,
+  "aggs": {
+    "moyenne_rating": {
+      "avg": {
+        "field": "Rating"
+      }
+    }
+  }
+}
 analyzer = SentimentIntensityAnalyzer()
 
 def analyze_sentiment(text):
@@ -110,3 +122,11 @@ for my_index in indexList:
     print(f"Database : {my_index}" )
     print(f"Mean Squared Error: {mse:.2f}")  # Evaluate model fit
     print("Moyenne des ratings prédits sur les données de test:", average_predicted_rating)
+
+
+
+    # Exécutez la requête de recherche
+    resultat = es.search(index=my_index, body=requete)
+    # Récupérez la moyenne des ratings
+    moyenne_rating = resultat["aggregations"]["moyenne_rating"]["value"]
+    print("Moyenne des ratings en base:", moyenne_rating)
