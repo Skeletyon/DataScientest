@@ -27,13 +27,15 @@ services:
 
   fastapi:
     container_name: fastapi-container
-    image: datascientest/fastapi:1.0.0
+    build:
+      context: ../fastapi/
     ports:
       - "8000:8000"
     networks:
       - es-net
     depends_on:
       - elasticsearch
+
 
 networks:
   es-net:
