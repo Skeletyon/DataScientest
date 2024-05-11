@@ -31,12 +31,20 @@ troisEtoile = []
 deuxEtoile = []
 uneEtoile = []
 
-#Il faut recuperer l'url du detail
-wonderboxDiv = soup.find('div', attrs={'class': 'styles_main__XgQiu'})
 
 
 # Recuperation de toutes les entreprises de la categorie gift
 for i in range(1, lastPage):
+    urlUp = url  # Permet d'avoir une url de recherche toujours clean en debut de process
+    # print(f"Page: {i}")
+    if i != 1:  # Seule la premiere page n'a pas de ?page=x
+        urlUp = url + '&page=' + str(i)
+
+    # print(urlUp)
+    page = urlopen(urlUp)
+    soup = bs(page, "html.parser")
+    # Il faut recuperer l'url du detail
+    wonderboxDiv = soup.find('div', attrs={'class': 'styles_main__XgQiu'})
     values = wonderboxDiv.findAll('div', attrs={'class': 'paper_paper__1PY90 paper_outline__lwsUX card_card__lQWDv card_noPadding__D8PcU styles_wrapper__2JOo2'})
     for record in values:
 
@@ -46,16 +54,20 @@ for i in range(1, lastPage):
         # Récupérez la valeur de l'attribut href
         link_entreprise.append(a_tag.get('href'))
 
+# print(link_entreprise)
+# exit()
 # Une fois qu'on a toutes les entreprises
 for iterationNumber, entreprise_link in enumerate(link_entreprise, start=1):
 
     url_review = 'https://www.trustpilot.com' + entreprise_link
+    # print(f"url_review: {url_review}, iterationNumber: {iterationNumber}")
     page = urlopen(url_review)
 
     soup = bs(page, "html.parser")
     wonderboxDiv = soup.find('div', attrs={'class': 'styles_summary__gEFdQ'})
 
     name = wonderboxDiv.find('span', attrs={'class': 'title_displayName__TtDDM'}).text.strip()
+    print(name)
     nomEntreprise.append(name)
 
     avisNbr = wonderboxDiv.find('span', attrs={'class': 'styles_text__W4hWi'}).text[:-13].strip()

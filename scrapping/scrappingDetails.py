@@ -19,24 +19,16 @@ tab_url_pays = [
 for url, pays in tab_url_pays:
     print(f"Nom: {url}, Pays: {pays}")
 
- #   url = 'https://www.trustpilot.com/review/www.wonderbox.fr'  # ?page=2
+    # url = 'https://www.trustpilot.com/review/www.wonderbox.fr'  # ?page=2
     page = urlopen(url)
 
     soup = bs(page, "html.parser")
-
-    wonderboxDiv = soup.find('div', attrs={'class' : 'styles_summary__gEFdQ'})
-
-    # print(wonderboxDiv.prettify())
-    companyName = wonderboxDiv.find('span', attrs={'class' : 'title_displayName__TtDDM'}).text
-    nombreAvis = wonderboxDiv.find('span', attrs={'class': 'styles_text__W4hWi'}).text[:-11].strip()
-    isVerifiedCompany = 'oui' if wonderboxDiv.find('div', attrs={'class' : 'styles_verificationIcon___X7KO'}).text == 'VERIFIED COMPANY' else 'non'
-    ratingCompany = wonderboxDiv.find('p', attrs={'data-rating-typography' : 'true'}).text
 
     #partie "avis detailles"
     #recuperer le nombre de pages d'avis
     pages = soup.find('div', attrs={'class': 'styles_pagination__6VmQv'})
     pageTotal = pages.find()
-    # print(pages.prettify())S
+    # print(pages.prettify())
 
     lastPage = int(pageTotal.find('a', attrs={'name': 'pagination-button-last'}).text)
 
@@ -47,10 +39,13 @@ for url, pays in tab_url_pays:
     rating = []
     reply = []
     for i in range(1, lastPage):
-        if i != 1 : #La premiere page n'a pas de ?page=x
-            url = 'https://www.trustpilot.com/review/www.wonderbox.fr'  # ?page=2
-            page = urlopen(url)
-            soup = bs(page, "html.parser")
+        urlUp = url #Permet d'avoir une url de recherche toujours clean en debut de process
+        # print(f"Page: {i}")
+        if i != 1 : #Seule la premiere page n'a pas de ?page=x
+            urlUp = url+'?page='+str(i)
+
+        page = urlopen(urlUp)
+        soup = bs(page, "html.parser")
 
         # Recuperer tous les avis de la page
         avis = soup.findAll('div', attrs={'class': 'styles_reviewCardInner__EwDq2'})
@@ -58,7 +53,7 @@ for url, pays in tab_url_pays:
         for record in avis:
             fullCommentaire = []
             title = record.find('div', attrs={'class': "styles_consumerDetailsWrapper__p2wdr"})
-            # print(record)
+            # print(title)
             note = record.find('div', attrs={'class' : "star-rating_starRating__4rrcf star-rating_medium__iN6Ty"})
 
             if note is not None:
@@ -71,6 +66,7 @@ for url, pays in tab_url_pays:
             else:
                 nom_prenom = "test"
 
+            # print(f"nom_prenom: {nom_prenom}")
             personne.append(nom_prenom)
             globalAvis = record.find('div', {'class': 'styles_reviewContent__0Q2Tg'})
             # print(globalAvis)
@@ -112,9 +108,9 @@ for url, pays in tab_url_pays:
                 response = 'None'
             reply.append(response)
 
+
     avis_col = pd.DataFrame(list(zip(personne, commentaire, rating, date, reply)), columns=['Personne', 'Commentaire', 'Rating', 'Date', 'Reponse'])
     pd.set_option('display.max_columns',None)
-    print(avis_col.info())
 
     # A décommenter si vous voulez faire des fichiers de sortie en CSV
     # nomFichier = "Wonderbox" + pays + ".csv"
@@ -123,16 +119,15 @@ for url, pays in tab_url_pays:
 
     json_df=avis_col.to_json(orient="records",force_ascii=False)
 
-
-
-    # current_date = dt.date.today()
-    # nomFichier="./results/Wonderbox"+pays+"_"+current_date+".json"
-    # print("Ecriture dans le fichier:",nomFichier)
-
     current_date = dt.date.today()
     f = current_date.strftime('%Y-%m-%d')
-    nomFichier = "./results/" + f + "_Wonderbox" + pays + ".json"
 
+    # current_date = dt.date.today()
+    nomFichier="./results/Wonderbox"+pays+"_"+f+".json"
+    # print("Ecriture dans le fichier:",nomFichier)
+
+    # nomFichier = "/opt/projet/scrapping/results/" + f + "_Wonderbox" + pays + ".json"
+    print("Ecriture dans le fichier:", nomFichier)
     with open(nomFichier, "w",encoding='utf-8') as f:
         f.write(json_df)
     f.close
