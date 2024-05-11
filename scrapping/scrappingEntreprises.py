@@ -77,7 +77,7 @@ for iterationNumber, entreprise_link in enumerate(link_entreprise, start=1):
     isVerified = 'oui' if exist and exist.text == 'VERIFIED COMPANY' else 'non'
     isVerifiedCompany.append(isVerified)
 
-    ratingCompany = wonderboxDiv.find('p', attrs={'data-rating-typography': 'true'})
+    ratingCompany = wonderboxDiv.find('p', attrs={'data-rating-typography': 'true'}).text
     noteCompany.append(ratingCompany)
 
     partieNote = soup.find('div', attrs={'class': 'styles_container__z2XKR'})
