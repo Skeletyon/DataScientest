@@ -48,7 +48,7 @@ GET /satisfactionclients/_search
   }
 }
 
-GET /satisfactionclients/_search
+GET /satisfactionclients_entreprises/_search
 {
   "query": {
     "match_all": {    }
@@ -56,7 +56,16 @@ GET /satisfactionclients/_search
 }
 
 
-
+GET /satisfactionclients_entreprises/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "_source": ["Entreprise", "Note"],
+  "sort": [
+    {"Note": {"order": "desc"}}
+  ]
+}
 
 
 GET /satisfactionclients/_search

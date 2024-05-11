@@ -4,6 +4,7 @@ from langdetect import detect_langs
 from langdetect.lang_detect_exception import LangDetectException
 from  Cstsentiments import sentiments_positifs_fr,sentiments_negatifs_fr
 import re
+import json
 #### IMPORTANT #######
 # A charger : python -m spacy download en_core_web_sm
 # A charger : python -m spacy download fr_core_news_sm
@@ -174,6 +175,37 @@ def detect_sentiment_other(phrase):
         #print("positif")
         return("positif")
 
+
+def calculate_average_rating(data):
+  """
+  Calculates the average rating from a dictionary containing star ratings as percentages.
+
+  Args:
+      data: A dictionary containing keys for each star rating (e.g., "5", "4", "3")
+            and their corresponding percentages as strings (e.g., "67%").
+
+  Returns:
+      The average rating as a float (between 0 and 100).
+  """
+
+  # Extract ratings and convert percentages to floats
+  ratings = {int(key): float(value.strip("%<").replace("<", "").replace("%", "")) for key, value in data.items() if key.isdigit()}
+
+  # Check if any ratings are provided
+  if not ratings:
+    return None  # Handle case where no ratings data is available
+
+  # Calculate weighted sum of ratings
+  weighted_sum = sum(rating * value for rating, value in ratings.items())
+
+  # Calculate total percentage (assuming all percentages add up to 100%)
+  total_percentage = 100
+
+  # Calculate average rating
+  average_rating = weighted_sum / total_percentage
+
+  return average_rating
+
 ######################### Usage : Test LIB ###################################
 # phrase="Le restaurant est bon.   Le menu, laccueil,  le service."
 # detect_sentiment_fr(phrase)
@@ -213,3 +245,30 @@ def detect_sentiment_other(phrase):
 # # Détecter le format de date
 # format_date_detecte = detect_format_date(date_str_1)
 # print(format_date_detecte)
+#
+# # On pourait en faire une petite fonction pour etre propres
+# cheminFichierScrapping = "../scrapping/results/"
+# # current_date = dt.date.today()
+# # f = current_date.strftime('%Y-%m-%d')
+# # jsonFile = cheminFichierScrapping + f + "_entreprises.json"
+# jsonFile = cheminFichierScrapping +  "2024-05-09_entreprises.json"
+# # Load the JSON data from the file
+# with open(jsonFile) as f:
+#   data = json.load(f)
+#
+# # Initialize an empty list to store average ratings
+# average_ratings = []
+#
+# # Calculate and store the average rating for each company
+# for company_data in data:
+#   average_rating = calculate_average_rating(company_data)
+#   if average_rating is not None:
+#     average_ratings.append(average_rating)
+#     print (company_data)
+#     print(average_rating)
+#     # Calculate the overall average rating
+#   overall_average_rating = sum(average_ratings) / len(average_ratings)
+#
+#
+# # Print the overall average rating
+# print(f"The overall average rating is: {overall_average_rating:.2f}")

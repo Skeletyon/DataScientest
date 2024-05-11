@@ -52,18 +52,18 @@ try:
     mapping = {
         "mappings": {
             "properties": {
-                "Domaine": {"type": "text"},
-                "Société": {"type": "text"},
-                "Pays": {"type": "text"},
+                "Domaine": {"type": "text", "analyzer": "standard"},
+                "Société": {"type": "text", "analyzer": "standard"},
+                "Pays": {"type": "text",  "analyzer": "standard"},
                 "Personne": {"type": "text"},
-                "Commentaire": {"type": "text" , "fielddata": True},
+                "Commentaire": {"type": "text" , "fielddata": True,  "analyzer": "standard"},
                 "Rating" : {"type": "float"},
                 "Date": {"type": "date"},
-                "Reponse": {"type": "text", "fielddata": True},
-                "Langue": {"type": "text", "fielddata": True},
-                "MotsPositifs": {"type": "text", "fielddata": True},
-                "MotsNegatifsifs": {"type": "text", "fielddata": True},
-                "Sentiment": {"type": "text", "fielddata": True},
+                "Reponse": {"type": "text", "fielddata": True,  "analyzer": "standard"},
+                "Langue": {"type": "text", "fielddata": True,  "analyzer": "standard"},
+                "MotsPositifs": {"type": "text", "fielddata": True,  "analyzer": "standard"},
+                "MotsNegatifs": {"type": "text", "fielddata": True,  "analyzer": "standard"},
+                "Sentiment": {"type": "text", "fielddata": True,  "analyzer": "standard"},
             }
         }
     }

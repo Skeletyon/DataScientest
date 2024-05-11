@@ -8,7 +8,7 @@ url = "http://localhost:9200"
 # Définir le nom d'utilisateur et le mot de passe
 username = "elastic"
 password = "elastic"
-index_name = "satisfactionclients_stopword"
+index_name = "satisfactionclients"
 jsonFile = "satisfactionWonderbox.json"
 
 

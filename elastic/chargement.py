@@ -3,8 +3,10 @@ from elasticsearch import Elasticsearch
 import json
 import datetime
 import re
-from LibSatisfaction import mots_pos_neg, detect_language,detect_format_date,detect_sentiment_fr,detect_sentiment_other
 import datetime as dt
+
+from LibSatisfaction import mots_pos_neg, detect_language,detect_format_date,detect_sentiment_fr,detect_sentiment_other
+
 
 #On pourait en faire une petite fonction pour etre propres
 cheminFichierScrapping = "../scrapping/results/"
@@ -34,26 +36,6 @@ jsonFiles=[ (belgique,"Belgique"),
 #              ("WonderboxFrance.json","France")
 #  ]
 #
-# # Mapping final avec langue, Mots positifs, Mot Négatifs, Sentiments
-#     mapping = {
-#         "mappings": {
-#             "properties": {
-#                 "Domaine": {"type": "text"},
-#                 "Société": {"type": "text"},
-#                 "Pays":{"type": "text"},
-#                 "Personne": {"type": "text"},
-#                 "Commentaire": {"type": "text" , "fielddata": True},
-#                 "Rating" : {"type": "float"},
-#                 "Date": {"type": "date"},
-#                 "Reponse": {"type": "text", "fielddata": True},
-#                 "Langue": {"type": "text", "fielddata": True},
-#                 "MotsPositifs": {"type": "text", "fielddata": True},
-#                 "MotsNegatifs": {"type": "text", "fielddata": True},
-#                 "Sentiment": {"type": "text", "fielddata": True},
-#             }
-#         }
-#     }
-# #
 
 
 # Créer une instance Elasticsearch avec le nom d'utilisateur et le mot de passe
