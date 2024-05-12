@@ -52,3 +52,6 @@ l10n/
 #Code exception
 scrapping/results/entreprise.json
 scrapping//results/details.json
+/scrapping/results/
+/Automatisation/Airflow/logs/*
+/Automatisation/Airflow/logs/scheduler/

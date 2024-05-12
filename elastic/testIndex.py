@@ -22,7 +22,7 @@ def check_all_indices_exist():
     # Se connecter à Elasticsearch
     es = Elasticsearch(
         url,
-        http_auth=(username, password),
+        basic_auth=(username, password),
     )
 
 
