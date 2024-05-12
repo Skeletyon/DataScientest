@@ -6,7 +6,7 @@ host = "127.0.0.1"
 port = 9200
 user = "elastic"
 password = "changeme"
-my_index ="satisfactionclients_stopword"
+my_index ="satisfactionclients_fr"
 
 # Créez un objet client Elasticsearch avec l'authentification.
 #es = Elasticsearch(hosts="http://@127.0.0.1:9200")
