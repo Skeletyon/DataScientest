@@ -1,9 +1,12 @@
+import urllib
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 from cleantext import clean
 import datetime as dt
+import requests
 
+print('Debut du script de recuperation des entreprises')
 #Il faut aller sur la page gift shop pour recuperer le listing
 url = 'https://www.trustpilot.com/categories/gift_shop?country=FR'
 
@@ -17,8 +20,10 @@ soup = bs(page, "html.parser")
 pages = soup.find('div', attrs={'class': 'styles_paginationWrapper__fukEb'})
 pageTotal = pages.find()
 
+
 lastPage = int(pageTotal.find('a', attrs={'name': 'pagination-button-last'}).text)
 # lastPage=2
+print(f"Recuperation des {lastPage} pages")
 
 link_entreprise = []
 nomEntreprise = []
@@ -31,77 +36,96 @@ troisEtoile = []
 deuxEtoile = []
 uneEtoile = []
 
+try:
+    print(f"Recuperation des liens de toutes les entreprises")
+    # Recuperation de toutes les entreprises de la categorie gift
+    for i in range(1, lastPage):
+        urlUp = url  # Permet d'avoir une url de recherche toujours clean en debut de process
+        # print(f"Page: {i}")
+        if i != 1:  # Seule la premiere page n'a pas de ?page=x
+            urlUp = url + '&page=' + str(i)
 
+        response = requests.get(urlUp)
+        html_content = response.content
 
-# Recuperation de toutes les entreprises de la categorie gift
-for i in range(1, lastPage):
-    urlUp = url  # Permet d'avoir une url de recherche toujours clean en debut de process
-    # print(f"Page: {i}")
-    if i != 1:  # Seule la premiere page n'a pas de ?page=x
-        urlUp = url + '&page=' + str(i)
+        # page = urlopen(urlUp)
+        soup = bs(html_content, "html.parser")
+        # print(urlUp)
+        # page = urlopen(urlUp)
+        # soup = bs(page, "html.parser")
+        # Il faut recuperer l'url du detail
+        wonderboxDiv = soup.find('div', attrs={'class': 'styles_main__XgQiu'})
+        values = wonderboxDiv.findAll('div', attrs={'class': 'paper_paper__1PY90 paper_outline__lwsUX card_card__lQWDv card_noPadding__D8PcU styles_wrapper__2JOo2'})
+        for record in values:
 
-    # print(urlUp)
-    page = urlopen(urlUp)
-    soup = bs(page, "html.parser")
-    # Il faut recuperer l'url du detail
-    wonderboxDiv = soup.find('div', attrs={'class': 'styles_main__XgQiu'})
-    values = wonderboxDiv.findAll('div', attrs={'class': 'paper_paper__1PY90 paper_outline__lwsUX card_card__lQWDv card_noPadding__D8PcU styles_wrapper__2JOo2'})
-    for record in values:
+            # Trouvez l'élément <a> avec l'attribut href
+            a_tag = record.find('a', href=True)
 
-        # Trouvez l'élément <a> avec l'attribut href
-        a_tag = record.find('a', href=True)
+            # Récupérez la valeur de l'attribut href
+            link_entreprise.append(a_tag.get('href'))
 
-        # Récupérez la valeur de l'attribut href
-        link_entreprise.append(a_tag.get('href'))
+    # print(link_entreprise)
+    # exit()
+    print(f"Recuperation des liens termine")
+    print(f"Debut de la recuperation des donnees")
+    # Une fois qu'on a toutes les entreprises
+    for iterationNumber, entreprise_link in enumerate(link_entreprise, start=1):
 
-# print(link_entreprise)
-# exit()
-# Une fois qu'on a toutes les entreprises
-for iterationNumber, entreprise_link in enumerate(link_entreprise, start=1):
+        url_review = 'https://www.trustpilot.com' + entreprise_link
+        # print(f"url_review: {url_review}, iterationNumber: {iterationNumber}")
 
-    url_review = 'https://www.trustpilot.com' + entreprise_link
-    # print(f"url_review: {url_review}, iterationNumber: {iterationNumber}")
-    page = urlopen(url_review)
+        responseEntreprise = requests.get(url_review)
+        html_content = responseEntreprise.content
 
-    soup = bs(page, "html.parser")
-    wonderboxDiv = soup.find('div', attrs={'class': 'styles_summary__gEFdQ'})
+        # page = urlopen(urlUp)
+        soup = bs(html_content, "html.parser")
+        # page = urlopen(url_review)
+        #
+        # soup = bs(page, "html.parser")
+        wonderboxDiv = soup.find('div', attrs={'class': 'styles_summary__gEFdQ'})
 
-    name = wonderboxDiv.find('span', attrs={'class': 'title_displayName__TtDDM'}).text.strip()
-    print(name)
-    nomEntreprise.append(name)
+        name = wonderboxDiv.find('span', attrs={'class': 'title_displayName__TtDDM'}).text.strip()
+        print(name)
+        nomEntreprise.append(name)
 
-    avisNbr = wonderboxDiv.find('span', attrs={'class': 'styles_text__W4hWi'}).text[:-13].strip()
-    nombreAvis.append(avisNbr)
+        avisNbr = wonderboxDiv.find('span', attrs={'class': 'styles_text__W4hWi'}).text[:-13].strip()
+        nombreAvis.append(avisNbr)
 
-    exist = wonderboxDiv.find('div', attrs={'class': 'typography_body-xs__FxlLP'})
-    isVerified = 'oui' if exist and exist.text == 'VERIFIED COMPANY' else 'non'
-    isVerifiedCompany.append(isVerified)
+        exist = wonderboxDiv.find('div', attrs={'class': 'typography_body-xs__FxlLP'})
+        isVerified = 'oui' if exist and exist.text == 'VERIFIED COMPANY' else 'non'
+        isVerifiedCompany.append(isVerified)
 
-    ratingCompany = wonderboxDiv.find('p', attrs={'data-rating-typography': 'true'}).text
-    noteCompany.append(ratingCompany)
+        ratingCompany = wonderboxDiv.find('p', attrs={'data-rating-typography': 'true'}).text
+        noteCompany.append(ratingCompany)
 
-    partieNote = soup.find('div', attrs={'class': 'styles_container__z2XKR'})
+        partieNote = soup.find('div', attrs={'class': 'styles_container__z2XKR'})
 
-    partieCinqEtoile = partieNote.find('label', attrs={'data-star-rating': 'five'})
-    fiveStar = partieCinqEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
-    cinqEtoile.append(fiveStar)
+        partieCinqEtoile = partieNote.find('label', attrs={'data-star-rating': 'five'})
+        fiveStar = partieCinqEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
+        cinqEtoile.append(fiveStar)
 
-    partieQuatreEtoile = partieNote.find('label', attrs={'data-star-rating': 'four'})
-    fourStar = partieQuatreEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
-    quatreEtoile.append(fourStar)
+        partieQuatreEtoile = partieNote.find('label', attrs={'data-star-rating': 'four'})
+        fourStar = partieQuatreEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
+        quatreEtoile.append(fourStar)
 
-    partieTroisEtoile = partieNote.find('label', attrs={'data-star-rating': 'three'})
-    threeStar = partieTroisEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
-    troisEtoile.append(threeStar)
+        partieTroisEtoile = partieNote.find('label', attrs={'data-star-rating': 'three'})
+        threeStar = partieTroisEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
+        troisEtoile.append(threeStar)
 
-    partieDeuxEtoile = partieNote.find('label', attrs={'data-star-rating': 'two'})
-    twoStar = partieDeuxEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
-    deuxEtoile.append(twoStar)
+        partieDeuxEtoile = partieNote.find('label', attrs={'data-star-rating': 'two'})
+        twoStar = partieDeuxEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
+        deuxEtoile.append(twoStar)
 
-    partieUneEtoile = partieNote.find('label', attrs={'data-star-rating': 'one'})
-    oneStar = partieUneEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
-    uneEtoile.append(oneStar)
+        partieUneEtoile = partieNote.find('label', attrs={'data-star-rating': 'one'})
+        oneStar = partieUneEtoile.find('p', attrs={'class': 'styles_percentageCell__cHAnb'}).text
+        uneEtoile.append(oneStar)
+except urllib.error.HTTPError as e:
+    print(f"Erreur HTTP : {e}")
+    print("Erreur 403 : Trop de requetes de scrapping, blocage cote trustpilot. Reessayer un peu plus tard")
+except requests.RequestException as e:
+    print(f"Erreur lors de la requête : {e}")
 
+print(f"generation du dataFrame")
 dataEntreprise = pd.DataFrame(list(zip(
     nomEntreprise,
     noteCompany,
@@ -123,6 +147,7 @@ f = current_date.strftime('%Y-%m-%d')
 # nomFichier = "/opt/projet/scrapping/results/" + f + "_Wonderbox" + pays + ".json"
 #pour du local
 nomFichier = "./results/" + f + "_entreprises.json"
+print(f"Ecriture dans le fichier {nomFichier} ")
 
 with open(nomFichier, "w",encoding='utf-8') as f:
     f.write(json_df)
