@@ -41,6 +41,9 @@ sentiments_positifs_fr = [
   "reconnaissante",
   "inspiration",
   "émerveillement",
+  "rapide",
+  "merci",
+
 
   # Autres sentiments positifs
   "enthousiasme",
@@ -52,7 +55,12 @@ sentiments_positifs_fr = [
   "important",
   "bonus",
   "disponible",
-  "important"
+  "important",
+  "parfait",
+  "excellent",
+  "rien à dire",
+  "bravo",
+  "nickel"
 ]
 
 sentiments_negatifs_fr = [
@@ -68,9 +76,7 @@ sentiments_negatifs_fr = [
   "anxiété",
   "stress",
   "rupture",
-  "merci",
   "simple",
-  "rapide",
   "disponible"
 
   # Sentiments de mal-être
@@ -110,6 +116,16 @@ sentiments_negatifs_fr = [
   "pessimisme",
   "cynisme",
   "négativité",
+  "mauvais",
+  "déçu",
+  "négatif",
+  "horrible",
+  "morte",
+  "refus",
+  "déception",
+  "désagréable",
+  "vide",
+  "sans succès"
 ]
 
 sentiments_positifs_en = [
