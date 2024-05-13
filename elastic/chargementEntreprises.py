@@ -11,8 +11,8 @@ import datetime as dt
 cheminFichierScrapping = "../scrapping/results/"
 current_date = dt.date.today()
 f = current_date.strftime('%Y-%m-%d')
-#jsonFile = cheminFichierScrapping + f + "_entreprises.json"
-jsonFile = cheminFichierScrapping +  "2024-05-11_entreprises.json"
+jsonFile = cheminFichierScrapping + f + "_entreprises.json"
+#jsonFile = cheminFichierScrapping +  "2024-05-11_entreprises.json"
 
 # Définir l'URL de la base Elasticsearch
 url = "http://localhost:9200"
