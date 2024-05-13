@@ -12,7 +12,6 @@ services:
     ports:
       - 9200:9200
 
-
   kibana:
     container_name: kb-container
     image: docker.elastic.co/kibana/kibana:8.1.2
