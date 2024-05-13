@@ -2,18 +2,8 @@
 # WonderboxBelgique.json (ou csv)
 # WonderboxFrance.json (ou csv)
 # WonderboxHollande.json (ou csv)
-<<<<<<< Updated upstream
 
-=======
-<<<<<<< Updated upstream
 import urllib
-=======
-
-
-
-
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as bs
 import pandas as pd
