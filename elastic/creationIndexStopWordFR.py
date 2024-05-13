@@ -52,8 +52,8 @@ try:
         "mappings": {
             "properties": {
                 "Domaine": {"type": "text", "analyzer": "standard"},
-                "Société": {"type": "text", "analyzer": "standard"},
-                "Pays": {"type": "text", "analyzer": "standard"},
+                "Société": {"type": "keyword","index": True},
+                "Pays": {"type": "text", "fielddata": True, "analyzer": "standard"},
                 "Personne": {"type": "text"},
                 "Commentaire": {"type": "text", "fielddata": True, "analyzer": "language"},
                 "Rating": {"type": "float"},
