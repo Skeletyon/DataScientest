@@ -33,6 +33,7 @@ services:
       - es-net
     depends_on:
       - elasticsearch
+
 networks:
   es-net:
     driver: bridge

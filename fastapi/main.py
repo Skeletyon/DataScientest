@@ -6,13 +6,13 @@ from datetime import datetime
 app = FastAPI()
 
 # Spécifiez les paramètres de connexion Elasticsearch
-host = "127.0.0.1"
+host = "elasticsearch:9200"
 port = 9200
 user = "elastic"
 password = "changeme"
 
 # Créez un objet client Elasticsearch avec l'authentification de base
-es = Elasticsearch([f'http://{host}:{port}'], basic_auth=(user, password))
+es = Elasticsearch([f'http://{host}'], basic_auth=(user, password))
 
 @app.get("/comments")
 async def get_comments(index: str = "satisfactionclients_fr"):
