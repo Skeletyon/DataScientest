@@ -15,7 +15,7 @@ jsonFile = cheminFichierScrapping + f + "_entreprises.json"
 #jsonFile = cheminFichierScrapping +  "2024-05-11_entreprises.json"
 
 # Définir l'URL de la base Elasticsearch
-url = "http://localhost:9200"
+url = "http://localhost:30003"
 
 # Définir le nom d'utilisateur et le mot de passe
 username = "elastic"
@@ -73,6 +73,7 @@ try:
     # Verify document count using the correct method
     count = es.search(index=index_name_ent, body={"size": 0})["hits"]["total"]["value"]
     print(f"\nNombre de documents chargés en : {count}")
+
 
 
     print("Chargement complet des données terminé")
