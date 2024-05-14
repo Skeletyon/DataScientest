@@ -10,17 +10,18 @@ import datetime as dt
 cheminFichierScrapping = "../scrapping/results/"
 current_date = dt.date.today()
 f = current_date.strftime('%Y-%m-%d')
+#f="2024-05-13"
 belgique = cheminFichierScrapping + "WonderboxBelgique_"+f+".json"
 france = cheminFichierScrapping + "WonderboxFrance_"+f+".json"
 hollande = cheminFichierScrapping + "WonderboxHollande_"+f+".json"
 
 # Définir l'URL de la base Elasticsearch
-#url = "http://localhost:9200"
-url = "http://elasticsearch:30002"
+url = "http://localhost:30003"
 
 # Définir le nom d'utilisateur et le mot de passe
 username = "elastic"
 password = "changeme"
+
 #index_name = "satisfactionclients"
 index_name_fr = "satisfactionclients_fr"
 index_name_en = "satisfactionclients_en"

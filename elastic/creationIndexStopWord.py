@@ -4,7 +4,7 @@ from elasticsearch import Elasticsearch
 
 #
 # # Définir l'URL de la base Elasticsearch
-url = "http://localhost:9200"
+url = "http://localhost:30003"
 #
 # # Définir le nom d'utilisateur et le mot de passe
 username = "elastic"
