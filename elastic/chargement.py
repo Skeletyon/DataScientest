@@ -15,7 +15,8 @@ france = cheminFichierScrapping + "WonderboxFrance_"+f+".json"
 hollande = cheminFichierScrapping + "WonderboxHollande_"+f+".json"
 
 # Définir l'URL de la base Elasticsearch
-url = "http://localhost:9200"
+#url = "http://localhost:9200"
+url = "http://elasticsearch:30002"
 
 # Définir le nom d'utilisateur et le mot de passe
 username = "elastic"
