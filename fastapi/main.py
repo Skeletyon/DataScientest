@@ -2,6 +2,8 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException, Query
 from elasticsearch import Elasticsearch
 from datetime import datetime
+import subprocess
+import os
 
 app = FastAPI()
 
@@ -189,3 +191,85 @@ async def get_comments_with_response_count(index: str = "satisfactionclients_fr"
     
     return {"comments_with_response_count": response_comments_count}
 
+
+@app.get("/top-companies-stats")
+async def get_top_companies_stats(index: str = "satisfactionclients_entreprises"):
+    # Définir la requête Elasticsearch pour récupérer les données des meilleures entreprises
+    query = {
+        "size": 5,
+        "sort": [
+            {"Nombre avis": {"order": "desc"}},  # Trier par nombre d'avis décroissant
+            {"Note": {"order": "desc"}}  # Trier par note décroissante
+        ],
+        "_source": ["Entreprise", "Note", "Nombre avis"]
+    }
+
+    try:
+        # Exécuter la requête Elasticsearch
+        response = es.search(index=index, body=query)
+
+        # Extraire les données des entreprises
+        top_companies_stats = [{
+            "Entreprise": hit['_source']['Entreprise'],
+            "Note": hit['_source']['Note'],
+            "Nombre_avis": hit['_source']['Nombre avis']
+        } for hit in response['hits']['hits']]
+
+        return top_companies_stats
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors de la requête Elasticsearch: {str(e)}")
+
+
+
+@app.get("/bottom-companies-stats")
+async def get_bottom_companies_stats(index: str = "satisfactionclients_entreprises"):
+    # Définir la requête Elasticsearch pour récupérer les données des moins bonnes entreprises
+    query = {
+        "size": 5,
+        "sort": [
+            {"Nombre avis": {"order": "asc"}},  # Trier par nombre d'avis croissant
+            {"Note": {"order": "asc"}}  # Trier par note croissante
+        ],
+        "_source": ["Entreprise", "Note", "Nombre avis"]
+    }
+
+    try:
+        # Exécuter la requête Elasticsearch
+        response = es.search(index=index, body=query)
+
+        # Extraire les données des entreprises
+        bottom_companies_stats = [{
+            "Entreprise": hit['_source']['Entreprise'],
+            "Note": hit['_source']['Note'],
+            "Nombre_avis": hit['_source']['Nombre avis']
+        } for hit in response['hits']['hits']]
+
+        return bottom_companies_stats
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors de la requête Elasticsearch: {str(e)}")
+
+
+
+
+@app.get("/run-machine-learning")
+async def run_machine_learning():
+    try:
+        # Récupérer le chemin absolu du répertoire contenant main.py
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Construire le chemin absolu vers machinelearning.py
+        script_path = os.path.join(current_dir, "../elastic/machinelearning.py")
+        
+        # Exécuter le script machinelearning.py en tant que processus séparé avec l'interpréteur Python
+        result = subprocess.run(["python3", script_path], capture_output=True, text=True)
+
+        # Vérifier si l'exécution s'est terminée avec succès
+        if result.returncode == 0:
+            # Renvoyer la sortie du script comme réponse à l'API
+            return {"output": result.stdout}
+        else:
+            # Si une erreur s'est produite, renvoyer le message d'erreur
+            return {"error": result.stderr}
+    except Exception as e:
+        # Si une exception est levée, renvoyer l'erreur
+        return {"error": str(e)}
