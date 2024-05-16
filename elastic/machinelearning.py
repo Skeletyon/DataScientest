@@ -1,3 +1,5 @@
+import nltk
+nltk.download('vader_lexicon')
 from elasticsearch import Elasticsearch
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
