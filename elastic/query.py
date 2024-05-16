@@ -36,7 +36,7 @@ if es.ping():
             "query": {
                     "match": {
                         "Commentaire": {
-                            "query": "bon"
+                            "query": "mauvais"
                         }
                     }
             }
@@ -46,7 +46,14 @@ if es.ping():
 
     # Itérez sur les résultats et affichez les documents
     for hit in results["hits"]["hits"]:
-        print(hit["_source"])
+        company_name = hit['_source']['Société']
+        company_note = hit['_source']['Rating']
+        company_avis = hit['_source']['Commentaire']
+        company_sentiment= hit['_source']['Sentiment']
+        company_motspositifs= hit['_source']['MotsPositifs']
+        company_motsnegatifs= hit['_source']['MotsNegatifs']
+        print(f"Company: {company_name}, Rating: {company_note}, Avis: {company_avis}, Sentiment:{company_sentiment},Mots positifs:{company_motspositifs}, "
+              f"Mots négatifs:{company_motsnegatifs}")
 
 
 else:

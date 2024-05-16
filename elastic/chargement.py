@@ -10,16 +10,18 @@ import datetime as dt
 cheminFichierScrapping = "../scrapping/results/"
 current_date = dt.date.today()
 f = current_date.strftime('%Y-%m-%d')
-belgique = cheminFichierScrapping + f + "_WonderboxBelgique.json"
-france = cheminFichierScrapping + f + "_WonderboxFrance.json"
-hollande = cheminFichierScrapping + f + "_WonderboxHollande.json"
+#f="2024-05-13"
+belgique = cheminFichierScrapping + "WonderboxBelgique_"+f+".json"
+france = cheminFichierScrapping + "WonderboxFrance_"+f+".json"
+hollande = cheminFichierScrapping + "WonderboxHollande_"+f+".json"
 
 # Définir l'URL de la base Elasticsearch
-url = "http://localhost:9200"
+url = "http://localhost:30003"
 
 # Définir le nom d'utilisateur et le mot de passe
 username = "elastic"
 password = "changeme"
+
 #index_name = "satisfactionclients"
 index_name_fr = "satisfactionclients_fr"
 index_name_en = "satisfactionclients_en"
@@ -113,14 +115,6 @@ try:
             else:
                 doc["Sentiment"] =detect_sentiment_other(comment)
 
-                # if (len(mots_positifs) == len(mots_negatifs) ):
-            #     doc["Sentiment"]   = "neutre"
-            # elif (len(mots_positifs) > len(mots_negatifs) ):
-            #     doc["Sentiment"] = "positif"
-            # elif (len(mots_negatifs) > len(mots_positifs) ):
-            #     doc["Sentiment"] = "negatif"
-            # else:
-            #     doc["Sentiment"] = "neutre"
 
             if (lang == "fr"):
             # Indexation

@@ -78,16 +78,12 @@ def neg_pos_fr_lexique(texte):
     for mot_positif in sentiments_positifs_fr:
         # Vérifier si le mot positif se trouve dans le texte
         if re.search(r'\b{}\b'.format(mot_positif), texte, flags=re.IGNORECASE):
-            # Ajouter le mot positif à la liste des mots positifs détectés
-            # Ajouter le mot positif à la liste des mots positifs détectés
             mots_positifs_detectes= mots_positifs_detectes + "," + mot_positif
 
     # Parcourir chaque mot negatif dans la liste
     for mot_negatif in sentiments_negatifs_fr:
         # Vérifier si le mot positif se trouve dans le texte
         if re.search(r'\b{}\b'.format(mot_negatif), texte, flags=re.IGNORECASE):
-            # Ajouter le mot positif à la liste des mots positifs détectés
-            #mots_negatifs_detectes.append(mot_negatif)
             mots_negatifs_detectes = mots_negatifs_detectes + "," + mot_negatif
 
     return mots_negatifs_detectes,mots_positifs_detectes
